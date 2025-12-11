@@ -92,4 +92,15 @@ class SimpleNeuralNetwork:
             # update weights
             self.weights[layer_index] -= learning_rate * dW
             self.biases[layer_index] -= learning_rate * dB
-
+    
+    def predict(self, X):
+        
+        X = np.array(X)
+        if X.ndim == 1:
+            X = X.reshape(1, -1)
+            
+        output = self.forward(X)
+        predicted_classes = (output > 0.5).astype(int).flatten()
+        
+        for i, cls in enumerate(predicted_classes):
+            print(f"Sample {i}: Predicted class = {cls}")
