@@ -66,3 +66,30 @@ class SimpleNeuralNetwork:
         return activation_output
 
 
+    def backward(self, X, y, learning_rate):
+
+        m = X.shape[0]
+        y_pred = self.layer_activations[-1]
+
+        dA = (y_pred - y)
+
+        for layer_index in reversed(range(len(self.weights))):
+
+            Z = self.layer_inputs[layer_index]
+            A_prev = self.layer_activations[layer_index]
+
+            _, act_deriv = self.get_activation_func(self.activations[layer_index])
+            
+            dZ = dA * act_deriv(Z)
+
+            # gradients
+            dW = np.dot(A_prev.T, dZ) / m
+            dB = np.sum(dZ, axis=0, keepdims=True) / m
+
+            # backpropagate error
+            dA = np.dot(dZ, self.weights[layer_index].T)
+
+            # update weights
+            self.weights[layer_index] -= learning_rate * dW
+            self.biases[layer_index] -= learning_rate * dB
+
