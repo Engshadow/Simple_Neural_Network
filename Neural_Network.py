@@ -94,4 +94,7 @@ class SimpleNeuralNetwork:
     def predict(self, X):
             probabilities = self.forward(X)
             predictions = (probabilities >= 0.5).astype(int)
+            
+            for i, cls in enumerate(predictions):
+                print(f"Sample {i}: Predicted class = {cls}")
             return predictions
